@@ -16,24 +16,18 @@ export default function ContactForm() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const payload = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      company: formData.get('company'),
-      message: formData.get('message'),
-      website: formData.get('website'),
-    };
+    const encodedForm = new URLSearchParams();
+    formData.forEach((value, key) => encodedForm.append(key, String(value)));
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encodedForm.toString(),
       });
-      const result = await response.json().catch(() => null);
 
       if (!response.ok) {
-        throw new Error(result?.error || 'Your message could not be sent. Please try again.');
+        throw new Error('Your message could not be sent. Please try again.');
       }
 
       form.reset();
@@ -44,10 +38,12 @@ export default function ContactForm() {
     }
   }
 
-  return <form className="contact-form" onSubmit={handleSubmit}>
+  return <form className="contact-form" name="portfolio-contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={handleSubmit}>
+    <input type="hidden" name="form-name" value="portfolio-contact" />
+    <input type="hidden" name="subject" value="New portfolio enquiry" />
     <div className="contact-honeypot" aria-hidden="true">
-      <label htmlFor="website">Website</label>
-      <input id="website" name="website" tabIndex={-1} autoComplete="off" />
+      <label htmlFor="bot-field">Don’t fill this out if you’re human</label>
+      <input id="bot-field" name="bot-field" tabIndex={-1} autoComplete="off" />
     </div>
     <input required name="name" minLength={2} maxLength={80} autoComplete="name" aria-label="Your name" placeholder="Your name" />
     <input required name="email" type="email" maxLength={160} autoComplete="email" aria-label="Email address" placeholder="Email address" />

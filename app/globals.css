@@ -480,6 +480,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .contact input:focus, .contact textarea:focus { border-color: rgba(121,242,208,.5); background: rgba(121,242,208,.025); box-shadow: 0 0 0 3px rgba(121,242,208,.055); }
 .contact textarea { resize: vertical; min-height: 145px; }
 .contact form .button { width: 100%; }
+.contact form .button:disabled { cursor: wait; opacity: .65; transform: none; }
+.contact-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
+.contact-form-status { display: none; min-height: 22px; align-items: center; gap: 8px; padding: 2px 3px 0; font-size: 12px; line-height: 1.5; }
+.contact-form-status.success, .contact-form-status.error { display: flex; }
+.contact-form-status.success { color: var(--mint); }
+.contact-form-status.error { color: var(--coral); }
+.contact-form-status svg { flex: 0 0 auto; }
 footer { padding: 34px; border-top: 1px solid var(--line); color: #697682; text-align: center; font: 9px 'DM Mono'; letter-spacing: .5px; }
 footer span { margin: 0 8px; color: var(--mint); }
 

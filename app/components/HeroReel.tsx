@@ -12,6 +12,7 @@ type ReelProps = {
   onFrontChange: (index: number) => void;
   onOpen: (slug: string) => void;
   onReady: () => void;
+  rtl?: boolean;
 };
 
 const TAU = Math.PI * 2;
@@ -19,13 +20,13 @@ const CARD_W = .95;
 const CARD_H = CARD_W * 16 / 9;
 
 /** Horizontal position of the ring: beside the copy on wide screens, centred above it on narrow ones. */
-function ringOffset(viewportWidth: number, narrow: boolean) {
-  return narrow ? 0 : Math.min(viewportWidth * .255, 3.4);
+function ringOffset(viewportWidth: number, narrow: boolean, rtl = false) {
+  return narrow ? 0 : Math.min(viewportWidth * .255, 3.4) * (rtl ? -1 : 1);
 }
 
-function Shadow() {
+function Shadow({ rtl }: { rtl?: boolean }) {
   const { viewport } = useThree();
-  return <ContactShadows position={[ringOffset(viewport.width, false), -1.95, -1.4]} opacity={.32} scale={8} blur={2.6} far={4.5} resolution={512} color="#1b2340"/>;
+  return <ContactShadows position={[ringOffset(viewport.width, false, rtl), -1.95, -1.4]} opacity={.32} scale={8} blur={2.6} far={4.5} resolution={512} color="#1b2340"/>;
 }
 
 /** Wraps an angle into the range (-PI, PI]. */
@@ -88,7 +89,7 @@ function Card({ item, angle, radius, index, spin, hovered, setHovered, open }: {
   />;
 }
 
-function Ring({ items, onFrontChange, onOpen, onReady, interaction }: ReelProps & {
+function Ring({ items, onFrontChange, onOpen, onReady, rtl, interaction }: ReelProps & {
   interaction: React.MutableRefObject<{ velocity: number; dragging: boolean; moved: number; reduced: boolean }>;
 }) {
   const group = useRef<THREE.Group>(null);
@@ -127,7 +128,7 @@ function Ring({ items, onFrontChange, onOpen, onReady, interaction }: ReelProps 
       const tiltZ = -.09 + (state.reduced ? 0 : pointer.x * .05);
       g.rotation.x = THREE.MathUtils.damp(g.rotation.x, tiltX, 3, delta);
       g.rotation.z = THREE.MathUtils.damp(g.rotation.z, tiltZ, 3, delta);
-      const baseX = ringOffset(viewport.width, narrow);
+      const baseX = ringOffset(viewport.width, narrow, rtl);
       const baseY = narrow ? .05 : .15;
       g.position.x = baseX;
       g.position.y = baseY + scroll * 1.6;
@@ -208,7 +209,7 @@ export default function HeroReel(props: ReelProps) {
       <Suspense fallback={null}>
         <Ring {...props} interaction={interaction}/>
       </Suspense>
-      {!narrow && <Shadow/>}
+      {!narrow && <Shadow rtl={props.rtl}/>}
     </Canvas>
   </div>;
 }

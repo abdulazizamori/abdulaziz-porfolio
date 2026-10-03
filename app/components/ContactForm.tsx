@@ -2,10 +2,11 @@
 
 import { AlertCircle, Check, Send } from 'lucide-react';
 import { FormEvent, useState } from 'react';
+import type { Dictionary } from '../i18n/ui';
 
 type FormState = 'idle' | 'sending' | 'success' | 'error';
 
-export default function ContactForm() {
+export default function ContactForm({ labels }: { labels: Dictionary['form'] }) {
   const [status, setStatus] = useState<FormState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -27,13 +28,13 @@ export default function ContactForm() {
       });
 
       if (!response.ok) {
-        throw new Error('Your message could not be sent. Please try again.');
+        throw new Error(labels.error);
       }
 
       form.reset();
       setStatus('success');
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Your message could not be sent. Please try again.');
+    } catch {
+      setErrorMessage(labels.error);
       setStatus('error');
     }
   }
@@ -45,15 +46,15 @@ export default function ContactForm() {
       <label htmlFor="bot-field">Don’t fill this out if you’re human</label>
       <input id="bot-field" name="bot-field" tabIndex={-1} autoComplete="off" />
     </div>
-    <label>Your name<input required name="name" minLength={2} maxLength={80} autoComplete="name" /></label>
-    <label>Email<input required name="email" type="email" maxLength={160} autoComplete="email" /></label>
-    <label>Company (optional)<input name="company" maxLength={120} autoComplete="organization" /></label>
-    <label>Message<textarea required name="message" minLength={10} maxLength={4000} placeholder="The role or project, and how I can help" rows={5}/></label>
+    <label>{labels.name}<input required name="name" minLength={2} maxLength={80} autoComplete="name" /></label>
+    <label>{labels.email}<input required name="email" type="email" maxLength={160} autoComplete="email" /></label>
+    <label>{labels.company}<input name="company" maxLength={120} autoComplete="organization" /></label>
+    <label>{labels.message}<textarea required name="message" minLength={10} maxLength={4000} placeholder={labels.messagePlaceholder} rows={5}/></label>
     <button className="button" type="submit" disabled={status === 'sending'}>
-      {status === 'sending' ? 'Sending…' : 'Send message'} <Send size={16}/>
+      {status === 'sending' ? labels.sending : labels.send} <Send size={16} className="dir-icon"/>
     </button>
     <div className={`contact-form-status ${status}`} aria-live="polite" role="status">
-      {status === 'success' && <><Check size={17}/> Message sent. Thanks, I’ll get back to you soon.</>}
+      {status === 'success' && <><Check size={17}/> {labels.success}</>}
       {status === 'error' && <><AlertCircle size={17}/> {errorMessage}</>}
     </div>
   </form>;

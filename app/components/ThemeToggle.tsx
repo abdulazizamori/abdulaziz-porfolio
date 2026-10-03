@@ -11,7 +11,7 @@ function currentTheme(): Theme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ labels }: { labels: { toLight: string; toDark: string } }) {
   const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function ThemeToggle() {
     setTheme(next);
   };
 
-  const label = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+  const label = theme === 'dark' ? labels.toLight : labels.toDark;
   return <button type="button" className="theme-toggle" onClick={toggle} aria-label={label} title={label}>
     {theme === 'dark' ? <Sun size={18} aria-hidden="true"/> : <Moon size={18} aria-hidden="true"/>}
   </button>;

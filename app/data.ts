@@ -109,3 +109,11 @@ export const experience = [
 export const education = { school: 'Nile University', degree: 'B.Sc. in Artificial Intelligence', place: 'Giza, Egypt', year: '2024' };
 
 export const certifications = ['Flutter & Firebase', 'Advanced Learning Algorithms', 'Google Data Analytics', 'Supervised Machine Learning', 'Unsupervised Machine Learning'];
+
+export const toolkit = [
+  { area: 'Mobile', tools: ['Flutter', 'Dart', 'Swift', 'Java', 'Cubit / BLoC', 'Provider', 'GetX', 'Dio', 'Firebase', 'Google Maps'] },
+  { area: 'Web', tools: ['Next.js', 'Nuxt.js', 'React', 'Vue.js', 'TypeScript', 'Tailwind CSS'] },
+  { area: 'Backend', tools: ['Laravel', 'Node.js', 'REST APIs', 'Socket.IO', 'Moyasar', 'Paymob'] },
+  { area: 'AI & ML', tools: ['Python', 'TensorFlow', 'Keras', 'Scikit-learn', 'NLP', 'LLMs', 'RAG', 'Vector search'] },
+  { area: 'Engineering', tools: ['Clean Architecture', 'MVVM', 'SOLID', 'Design patterns', 'Dependency injection', 'Testing', 'CI/CD with GitHub Actions', 'App Store & Play Store releases'] }
+];

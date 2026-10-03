@@ -45,15 +45,15 @@ export default function ContactForm() {
       <label htmlFor="bot-field">Don’t fill this out if you’re human</label>
       <input id="bot-field" name="bot-field" tabIndex={-1} autoComplete="off" />
     </div>
-    <input required name="name" minLength={2} maxLength={80} autoComplete="name" aria-label="Your name" placeholder="Your name" />
-    <input required name="email" type="email" maxLength={160} autoComplete="email" aria-label="Email address" placeholder="Email address" />
-    <input name="company" maxLength={120} autoComplete="organization" aria-label="Company" placeholder="Company (optional)" />
-    <textarea required name="message" minLength={10} maxLength={4000} aria-label="Project details" placeholder="What would you like to build?" rows={5}/>
+    <label>Your name<input required name="name" minLength={2} maxLength={80} autoComplete="name" /></label>
+    <label>Email<input required name="email" type="email" maxLength={160} autoComplete="email" /></label>
+    <label>Company (optional)<input name="company" maxLength={120} autoComplete="organization" /></label>
+    <label>Message<textarea required name="message" minLength={10} maxLength={4000} placeholder="The role or project, and how I can help" rows={5}/></label>
     <button className="button" type="submit" disabled={status === 'sending'}>
       {status === 'sending' ? 'Sending…' : 'Send message'} <Send size={16}/>
     </button>
     <div className={`contact-form-status ${status}`} aria-live="polite" role="status">
-      {status === 'success' && <><Check size={17}/> Message sent — thank you. I’ll be in touch soon.</>}
+      {status === 'success' && <><Check size={17}/> Message sent. Thanks, I’ll get back to you soon.</>}
       {status === 'error' && <><AlertCircle size={17}/> {errorMessage}</>}
     </div>
   </form>;

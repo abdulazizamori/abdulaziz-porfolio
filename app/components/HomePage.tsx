@@ -5,13 +5,15 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowUpRight, Download, Github, Linkedin, Mail, Menu, X } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, BriefcaseBusiness, Clock, Download, Github, Linkedin, Mail, Menu, Smartphone, X } from 'lucide-react';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import type { Discipline, Project } from '../data';
 import type { Content } from '../i18n/content';
 import { getDictionary, localePath, type Dictionary, type Locale } from '../i18n/ui';
 import type { ReelItem } from './HeroReel';
 import ContactForm from './ContactForm';
+import LoadTest from './LoadTest';
+import StoreQr from './StoreQr';
 import ThemeToggle from './ThemeToggle';
 import LanguageSwitch from './LanguageSwitch';
 
@@ -25,9 +27,9 @@ const CV = '/Abdulaziz-Amori-CV.pdf';
 const navIds = ['work', 'about', 'experience', 'contact'] as const;
 
 const reelSources: [string, string][] = [
-  ['al_alfy_1', 'al-alfy'], ['whailTail_3', 'whale-tail-academy'], ['1_lahim', 'mazaq-al-lahim'], ['school_finder_3', 'school-finder'],
-  ['match_egypt_3', 'match-egypt'], ['2_resaltk', 'resaltk-admin'], ['alalfy_driver_1', 'al-alfy-driver'], ['elakaber_3', 'el-akaber-app'],
-  ['whailTail_6', 'whale-tail-academy'], ['al_alfy_5', 'al-alfy'], ['3_lahim', 'mazaq-al-lahim'], ['school_finder_6', 'school-finder']
+  ['al_hdeed_1', 'al-hdeed'], ['al_alfy_1', 'al-alfy'], ['whailTail_3', 'whale-tail-academy'], ['1_lahim', 'mazaq-al-lahim'],
+  ['al_hdeed_2', 'al-hdeed'], ['school_finder_3', 'school-finder'], ['match_egypt_3', 'match-egypt'], ['2_resaltk', 'resaltk-admin'],
+  ['al_hdeed_3', 'al-hdeed'], ['alalfy_driver_1', 'al-alfy-driver'], ['elakaber_3', 'el-akaber-app'], ['whailTail_6', 'whale-tail-academy']
 ];
 
 const featuredSlugs = ['al-hdeed', 'al-alfy', 'whale-tail-academy', 'school-finder'];
@@ -47,6 +49,7 @@ export default function HomePage({ locale, content }: { locale: Locale; content:
   const [activeSection, setActiveSection] = useState('');
   const [front, setFront] = useState(0);
   const [reelReady, setReelReady] = useState(false);
+  const [intent, setIntent] = useState<'hire' | 'build' | null>(null);
 
   const byId = useCallback((slug: string) => projects.find(project => project.slug === slug)!, [projects]);
   const liveApps = projects.filter(project => project.storeLinks?.length);
@@ -104,24 +107,47 @@ export default function HomePage({ locale, content }: { locale: Locale; content:
 
     <main id="top">
       <section className="hero" aria-labelledby="hero-title">
-        <motion.div className="hero-stage" initial={{ opacity: 0 }} animate={{ opacity: reelReady ? 1 : 0 }} transition={{ duration: 1.1, ease: [.2, .7, .2, 1] }}>
+        <motion.div className="hero-stage" initial={{ opacity: 0 }} animate={{ opacity: reelReady ? 1 : 0 }} transition={{ duration: 1.4, ease: [.2, .7, .2, 1] }}>
           <HeroReel items={reel} onFrontChange={setFront} onOpen={openProject} onReady={markReady} rtl={t.dir === 'rtl'}/>
         </motion.div>
         <div className="hero-copy">
-          <p className="status rise" style={{ animationDelay: '60ms' }}><i aria-hidden="true"/>{t.status}</p>
           <h1 id="hero-title" className="hero-title">
             {t.nameLines.map((word, index) => <span className="line" key={word}><span style={{ animationDelay: `${150 + index * 90}ms` }}>{word}</span></span>)}
           </h1>
           <p className="hero-lede rise" style={{ animationDelay: '420ms' }}>{t.heroLede(liveApps.length)}</p>
-          <div className="hero-actions rise" style={{ animationDelay: '520ms' }}>
-            <a className="button" href="#work">{t.seeWork}</a>
-            <a className="button quiet" href={`mailto:${EMAIL}`}><Mail size={16} aria-hidden="true"/><span className="ltr">{EMAIL}</span></a>
+          <div className="intent rise" style={{ animationDelay: '520ms' }}>
+            <p id="intent-question">{t.intent.question}</p>
+            <div className="intent-switch" role="group" aria-labelledby="intent-question">
+              <button type="button" aria-pressed={intent === 'hire'} onClick={() => setIntent('hire')}><BriefcaseBusiness size={16} aria-hidden="true"/>{t.intent.hire}</button>
+              <button type="button" aria-pressed={intent === 'build'} onClick={() => setIntent('build')}><Smartphone size={16} aria-hidden="true"/>{t.intent.build}</button>
+            </div>
           </div>
-          <div className="hero-links rise" style={{ animationDelay: '620ms' }}>
-            <a href={GITHUB} target="_blank" rel="noreferrer"><Github size={16} aria-hidden="true"/>GitHub</a>
-            <a href={LINKEDIN} target="_blank" rel="noreferrer"><Linkedin size={16} aria-hidden="true"/>LinkedIn</a>
-            <a href={CV} download><Download size={16} aria-hidden="true"/>{t.downloadCv}</a>
-          </div>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div key={intent ?? 'none'} className="hero-next" initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} exit={{ opacity: 0, y: -6, filter: 'blur(4px)' }} transition={{ duration: .35, ease: [.16, 1, .3, 1] }}>
+              {intent && <p className="intent-pitch" aria-live="polite">{intent === 'hire' ? t.intent.hirePitch : t.intent.buildPitch}</p>}
+              <div className="hero-actions">
+                {intent === 'hire' && <>
+                  <a className="button sun" href="#experience">{t.intent.hireCtas[0]}</a>
+                  <a className="button quiet" href={CV} download><Download size={16} aria-hidden="true"/>{t.intent.hireCtas[1]}</a>
+                </>}
+                {intent === 'build' && <>
+                  <a className="button sun" href="#work">{t.intent.buildCtas[0]}</a>
+                  <a className="button quiet" href="#contact"><Mail size={16} aria-hidden="true"/>{t.intent.buildCtas[1]}</a>
+                </>}
+                {!intent && <>
+                  <a className="button sun" href="#work">{t.seeWork}</a>
+                  <a className="button quiet" href={`mailto:${EMAIL}`}><Mail size={16} aria-hidden="true"/><span className="ltr">{EMAIL}</span></a>
+                </>}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          <ul className="proof rise" style={{ animationDelay: '640ms' }}>
+            <li className="status"><i aria-hidden="true"/>{t.status}</li>
+            <li><a href="#work">{t.proof.live(liveApps.length)}<ArrowUpRight size={14} aria-hidden="true" className="dir-icon"/></a></li>
+            <li><Link href={href('/projects/al-hdeed')}><bdi>{t.proof.impact}</bdi><ArrowUpRight size={14} aria-hidden="true" className="dir-icon"/></Link></li>
+            <li><a href="#index">{t.proof.projects(projects.length)}<ArrowUpRight size={14} aria-hidden="true" className="dir-icon"/></a></li>
+            <li className="scroll-cue"><a href="#work">{t.scrollCue}<ArrowDown size={15} aria-hidden="true"/></a></li>
+          </ul>
         </div>
         {current && <motion.div className="reel-caption" initial={{ opacity: 0 }} animate={{ opacity: reelReady ? 1 : 0 }} transition={{ delay: .9 }}>
           <span className="reel-hint">{t.reelHint}</span>
@@ -130,44 +156,58 @@ export default function HomePage({ locale, content }: { locale: Locale; content:
       </section>
 
       <section className="live" aria-labelledby="live-title">
-        <h2 id="live-title">{t.liveTitle}</h2>
-        <ul className="live-list">
-          {liveApps.map(project => <li key={project.slug}>
-            <Link href={href(`/projects/${project.slug}`)} className="live-app">
-              {project.icon ? <Image src={project.icon} alt="" width={48} height={48}/> : <span className="lettermark" style={{ '--accent': project.accent } as React.CSSProperties}>{project.name.slice(0, 2)}</span>}
-              <span><b>{project.name}</b><small>{project.kind}</small></span>
-            </Link>
-          </li>)}
-        </ul>
-      </section>
-
-      <section id="work" className="section work" aria-labelledby="work-title">
-        <header className="section-head">
-          <h2 id="work-title">{t.workTitle}</h2>
-          <p>{t.workIntro}</p>
-        </header>
-        <div className="features">{featuredSlugs.map((slug, index) => <Feature key={slug} project={byId(slug)} flip={index % 2 === 1} t={t} href={href}/>)}</div>
-      </section>
-
-      <ProjectIndex projects={projects} t={t} href={href}/>
-
-      <section id="about" className="section about" aria-labelledby="about-title">
-        <figure className="portrait">
-          <Image src="/assets/images/abdulaziz.jpg" alt={t.name} width={800} height={1000} sizes="(max-width: 820px) 90vw, 420px"/>
-          <figcaption>{t.portraitCaption}</figcaption>
-        </figure>
-        <div className="about-body">
-          <h2 id="about-title" className="about-statement">{t.aboutStatement}</h2>
-          {t.aboutBody.map(paragraph => <p key={paragraph.slice(0, 24)}>{paragraph}</p>)}
-          <dl className="facts">
-            <div><dt>{t.facts.basedIn}</dt><dd>{t.facts.basedInValue}</dd></div>
-            <div><dt>{t.facts.projects}</dt><dd>{t.facts.projectsValue(projects.length)}</dd></div>
-            <div><dt>{t.facts.stores}</dt><dd>{t.facts.storesValue(liveApps.length)}</dd></div>
-            <div><dt>{t.facts.education}</dt><dd>{t.facts.educationValue}</dd></div>
-          </dl>
+        <div className="live-head">
+          <h2 id="live-title">{t.liveTitle}</h2>
+          <div className="hero-links">
+            <a href={GITHUB} target="_blank" rel="noreferrer"><Github size={16} aria-hidden="true"/>GitHub</a>
+            <a href={LINKEDIN} target="_blank" rel="noreferrer"><Linkedin size={16} aria-hidden="true"/>LinkedIn</a>
+            <a href={CV} download><Download size={16} aria-hidden="true"/>{t.downloadCv}</a>
+          </div>
+        </div>
+        <div className="drift">
+          {[0, 1].map(copy => <ul key={copy} className="live-list" aria-hidden={copy === 1 || undefined}>
+            {liveApps.map(project => <li key={project.slug}>
+              <Link href={href(`/projects/${project.slug}`)} className="live-app" tabIndex={copy === 1 ? -1 : undefined}>
+                {project.icon ? <Image src={project.icon} alt="" width={56} height={56}/> : <span className="lettermark" style={{ '--accent': project.accent } as React.CSSProperties}>{project.name.slice(0, 2)}</span>}
+                <span><b>{project.name}</b><small>{project.kind}</small></span>
+              </Link>
+            </li>)}
+          </ul>)}
         </div>
       </section>
 
+      <div className="band sand">
+        <section id="work" className="section work" aria-labelledby="work-title">
+          <header className="section-head">
+            <h2 id="work-title">{t.workTitle}</h2>
+            <p>{t.workIntro}</p>
+          </header>
+          <div className="features">{featuredSlugs.map((slug, index) => <Feature key={slug} project={byId(slug)} flip={index % 2 === 1} t={t} href={href}/>)}</div>
+        </section>
+
+        <ProjectIndex projects={projects} t={t} href={href}/>
+      </div>
+
+      <div className="band sky">
+        <section id="about" className="section about" aria-labelledby="about-title">
+          <figure className="portrait">
+            <Image src="/assets/images/abdulaziz.jpg" alt={t.name} width={800} height={1000} sizes="(max-width: 820px) 90vw, 420px"/>
+            <figcaption>{t.portraitCaption}</figcaption>
+          </figure>
+          <div className="about-body">
+            <h2 id="about-title" className="about-statement">{t.aboutStatement}</h2>
+            {t.aboutBody.map(paragraph => <p key={paragraph.slice(0, 24)}>{paragraph}</p>)}
+            <dl className="facts">
+              <div><dt>{t.facts.basedIn}</dt><dd>{t.facts.basedInValue}</dd></div>
+              <div><dt>{t.facts.projects}</dt><dd>{t.facts.projectsValue(projects.length)}</dd></div>
+              <div><dt>{t.facts.stores}</dt><dd>{t.facts.storesValue(liveApps.length)}</dd></div>
+              <div><dt>{t.facts.education}</dt><dd>{t.facts.educationValue}</dd></div>
+            </dl>
+          </div>
+        </section>
+      </div>
+
+      <div className="band sea">
       <section id="experience" className="section experience" aria-labelledby="experience-title">
         <header className="section-head"><h2 id="experience-title">{t.experienceTitle}</h2></header>
         <ol className="jobs">
@@ -198,12 +238,29 @@ export default function HomePage({ locale, content }: { locale: Locale; content:
           <a className="button small" href={CV} download><Download size={16} aria-hidden="true"/>{t.downloadMyCv}</a>
         </div>
       </section>
+      </div>
+
+      <div className="band sky">
+        <section id="process" className="section process" aria-labelledby="process-title">
+          <header className="section-head">
+            <h2 id="process-title">{t.processTitle}</h2>
+            <p>{t.processIntro}</p>
+          </header>
+          <ol className="steps">
+            {t.process.map(step => <li key={step.title}>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </li>)}
+          </ol>
+        </section>
+      </div>
 
       <section id="contact" className="contact" aria-labelledby="contact-title">
         <div className="contact-inner">
           <div className="contact-intro">
             <h2 id="contact-title">{t.contactTitle}</h2>
             <p>{t.contactIntro}</p>
+            <p className="reply-note"><Clock size={16} aria-hidden="true"/>{t.replyNote}</p>
             <a className="contact-email ltr" href={`mailto:${EMAIL}`}>{EMAIL}</a>
             <div className="contact-links">
               <a href={LINKEDIN} target="_blank" rel="noreferrer"><Linkedin size={16} aria-hidden="true"/>LinkedIn</a>
@@ -211,7 +268,7 @@ export default function HomePage({ locale, content }: { locale: Locale; content:
               <a href={CV} download><Download size={16} aria-hidden="true"/>{t.cvPdf}</a>
             </div>
           </div>
-          <ContactForm labels={t.form}/>
+          <ContactForm labels={t.form} email={EMAIL}/>
         </div>
         <footer className="footer"><span>{t.copyright}</span><a href="#top">{t.backToTop}</a></footer>
       </section>
@@ -229,21 +286,23 @@ function Feature({ project, flip, t, href }: { project: Project; flip: boolean; 
   const caseHref = href(`/projects/${project.slug}`);
   return <article className={`feature${flip ? ' flip' : ''}`} style={{ '--accent': project.accent } as React.CSSProperties}>
     <Tilt href={caseHref} label={t.openCase(project.name)}>
+      <span className="feature-sun" aria-hidden="true"/>
       {screens
         ? <div className="fan">{screens.map(name => <Image key={name} src={`/assets/work/${name}.jpg`} alt="" width={300} height={533} sizes="(max-width: 820px) 40vw, 220px"/>)}</div>
         : project.image && <Image className="solo" src={project.image} alt="" width={900} height={1033} sizes="(max-width: 820px) 80vw, 460px"/>}
     </Tilt>
     <div className="feature-copy">
-      <p className="feature-kind">{project.kind}</p>
       <h3>{project.name}</h3>
+      <p className="feature-kind">{project.kind}</p>
       <p className="feature-summary">{project.summary}</p>
-      {project.impact && <dl className="impact-strip">{project.impact.headline.map(item => <div key={item.label}><dt>{item.label}</dt><dd className="ltr">{item.value}</dd></div>)}</dl>}
+      {project.impact && <LoadTest labels={t.loadTest}/>}
       <p className="feature-role"><span>{t.myRole}</span>{project.role}</p>
       <ul className="feature-list">{project.features.map(feature => <li key={feature}>{feature}</li>)}</ul>
       <ul className="chips" aria-label={t.technologies}>{project.stack.map(tool => <li key={tool}>{tool}</li>)}</ul>
       <div className="feature-links">
         <Link className="button small" href={caseHref}>{t.readCase}</Link>
         {project.storeLinks?.map(link => <a key={link.href} className="text-link" href={link.href} target="_blank" rel="noreferrer">{link.label}<ArrowUpRight size={14} aria-hidden="true" className="dir-icon"/></a>)}
+        {project.storeLinks && <StoreQr links={project.storeLinks} labels={t.qr}/>}
       </div>
     </div>
   </article>;
@@ -282,7 +341,7 @@ function ProjectIndex({ projects, t, href }: { projects: Project[]; t: Dictionar
       <AnimatePresence initial={false} mode="popLayout">
         {shown.map(project => <motion.li key={project.slug} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .22 }}>
           <Link href={href(`/projects/${project.slug}`)} className="row" style={{ '--accent': project.accent } as React.CSSProperties}>
-            <span className="row-name">{project.name}{project.storeLinks ? <em>{t.liveBadge}</em> : project.website && <em>{t.websiteBadge}</em>}</span>
+            <span className="row-name"><i aria-hidden="true"/>{project.name}{project.storeLinks ? <em>{t.liveBadge}</em> : project.website && <em>{t.websiteBadge}</em>}</span>
             <span className="row-kind">{project.kind}</span>
             <span className="row-stack">{project.stack.slice(0, 3).join(', ')}</span>
             <span className="row-tags">{project.disciplines.map(item => t.disciplines[item]).join(' / ')}</span>

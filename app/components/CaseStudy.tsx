@@ -7,6 +7,8 @@ import { getContent } from '../i18n/content';
 import { getDictionary, localePath, type Locale } from '../i18n/ui';
 import ThemeToggle from './ThemeToggle';
 import LanguageSwitch from './LanguageSwitch';
+import LoadTest from './LoadTest';
+import StoreQr from './StoreQr';
 
 export const caseParams = () => allProjects.map(({ slug }) => ({ slug }));
 
@@ -45,11 +47,14 @@ export default function CaseStudy({ locale, slug }: { locale: Locale; slug: stri
 
     <section className="case-hero">
       {project.icon && <img className="case-icon" src={project.icon} alt={c.logo(project.name)} width={64} height={64}/>}
-      <p className="feature-kind">{project.kind}</p>
       <h1>{project.name}</h1>
+      <p className="feature-kind">{project.kind}</p>
       <p className="case-summary">{project.summary}</p>
       <ul className="chips" aria-label={t.technologies}>{project.stack.map(tool => <li key={tool}>{tool}</li>)}</ul>
-      {project.storeLinks && <div className="case-store">{project.storeLinks.map(link => <a key={link.href} className="button quiet small" href={link.href} target="_blank" rel="noreferrer">{c.getItOn(link.label)}<ArrowUpRight size={15} aria-hidden="true" className="dir-icon"/></a>)}</div>}
+      {project.storeLinks && <div className="case-store">
+        {project.storeLinks.map(link => <a key={link.href} className="button quiet small" href={link.href} target="_blank" rel="noreferrer">{c.getItOn(link.label)}<ArrowUpRight size={15} aria-hidden="true" className="dir-icon"/></a>)}
+        <StoreQr links={project.storeLinks} labels={t.qr}/>
+      </div>}
       {project.website && <div className="case-store"><a className="button quiet small" href={project.website} target="_blank" rel="noreferrer">{c.visitWebsite}<ArrowUpRight size={15} aria-hidden="true" className="dir-icon"/></a></div>}
     </section>
 
@@ -57,6 +62,7 @@ export default function CaseStudy({ locale, slug }: { locale: Locale; slug: stri
       {gallery.map((src, i) => <img key={src} src={src} alt={c.screen(project.name, i + 1)} className={src.endsWith('.png') ? 'wide' : undefined} loading={i < 3 ? 'eager' : 'lazy'}/>)}
     </section>}
 
+    <div className="band sand">
     <section className="case-body">
       <article><h2>{c.myRole}</h2><p>{c.roleDetail(project.role)}</p></article>
       <article><h2>{c.keyFeatures}</h2><ul>{project.features.map(feature => <li key={feature}>{feature}</li>)}</ul></article>
@@ -68,6 +74,7 @@ export default function CaseStudy({ locale, slug }: { locale: Locale; slug: stri
           <h2 id="impact-title">{c.impactTitle}</h2>
           <p>{c.impactIntro(project.impact.period)}</p>
         </header>
+        <LoadTest labels={t.loadTest}/>
         <div className="impact-table" role="table" aria-label={c.impactTable}>
           <div className="impact-row impact-labels" role="row"><span role="columnheader">{c.columns.area}</span><span role="columnheader">{c.columns.before}</span><span role="columnheader">{c.columns.after}</span><span role="columnheader">{c.columns.change}</span></div>
           {project.impact.metrics.map(metric => <div className="impact-row" role="row" key={metric.area}>
@@ -95,6 +102,7 @@ export default function CaseStudy({ locale, slug }: { locale: Locale; slug: stri
         <article><h2>{c.delivery}</h2><ul>{project.impact.delivery.map(item => <li key={item}>{item}</li>)}</ul></article>
       </section>
     </>}
+    </div>
 
     <nav className="case-next" aria-label={c.nextProject}>
       <Link className="next-link" href={href(`/projects/${next.slug}`)}><span>{c.nextProject}</span><b>{next.name}</b></Link>

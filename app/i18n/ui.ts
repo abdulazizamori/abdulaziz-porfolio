@@ -26,6 +26,47 @@ const en = {
   status: 'Open to full-time roles and freelance work',
   heroLede: (live: number) => `Flutter and full-stack engineer in Jeddah. I build whole products: the mobile app, the web platform, the API behind them, and the AI features on top. ${live} of my apps are live on the App Store and Google Play.`,
   seeWork: 'See my work',
+  intent: {
+    question: 'What brings you here?',
+    hire: 'I’m hiring',
+    build: 'I need an app built',
+    hirePitch: 'Open to full-time Flutter and full-stack roles. I ship to the stores, own the backend, and measure the results.',
+    buildPitch: 'One engineer for the whole product: the app, the dashboard, the API, payments, and store release.',
+    hireCtas: ['See my experience', 'Download CV'],
+    buildCtas: ['See apps I’ve shipped', 'Tell me about your project']
+  },
+  proof: {
+    live: (count: number) => `${count} apps live in the stores`,
+    impact: '+259% API capacity at Al Hdeed',
+    projects: (count: number) => `${count} projects across mobile, web, and AI`
+  },
+  scrollCue: 'Scroll to see the work',
+  loadTest: {
+    title: 'Production load test, before and after my fixes',
+    capacity: 'API capacity',
+    queries: 'Database queries when a signed-in user opens the app',
+    unit: 'req/s',
+    before: 'Ceiling hit: every guest shared one rate-limit bucket, so requests failed while the CPU sat idle.',
+    after: 'Proxy trusted, limits set per user and per IP: 60 req/s with 0% errors.',
+    replay: 'Run it again',
+    source: 'k6 load tests against production, 4 vCPU / 16 GB server.'
+  },
+  qr: {
+    open: 'Scan to install',
+    close: 'Close',
+    hint: 'Point your phone’s camera at a code.',
+    // A plain string, not a function: server-rendered case studies pass these labels to a client component.
+    label: 'QR code for'
+  },
+  processTitle: 'How I work',
+  processIntro: 'What happens after you send a message, from the first call to the app in your customers’ hands.',
+  process: [
+    { title: 'Scope and design', body: 'We agree on the users, the screens, and what launch looks like. You see the designs before any code is written.' },
+    { title: 'Build the whole product', body: 'The Flutter app, the admin dashboard, and the API behind them, with payments, maps, and notifications wired in. You get test builds as we go.' },
+    { title: 'Release', body: 'I handle App Store and Google Play submission and review, plus the production server.' },
+    { title: 'Support', body: 'Crash reporting and monitoring from day one, then fixes and new features after launch.' }
+  ],
+  replyNote: 'Based in Jeddah (GMT+3). I reply within one working day.',
   reelHint: 'Drag to spin. Click a screen to open it.',
   liveTitle: 'Live in the stores',
   workTitle: 'Selected work',
@@ -67,7 +108,8 @@ const en = {
     messagePlaceholder: 'The role or project, and how I can help',
     send: 'Send message', sending: 'Sending…',
     success: 'Message sent. Thanks, I’ll get back to you soon.',
-    error: 'Your message could not be sent. Please try again.'
+    error: 'Your message could not be sent.',
+    emailInstead: 'Email me directly instead.'
   },
   caseStudy: {
     allWork: 'All work',
@@ -122,6 +164,46 @@ const ar: Dictionary = {
   status: 'متاح لوظائف بدوام كامل وللعمل الحر',
   heroLede: (live: number) => `مهندس Flutter ومطوّر متكامل في جدة. أبني المنتج كاملًا: تطبيق الجوال، ومنصة الويب، والـ API الذي يشغّلهما، وميزات الذكاء الاصطناعي فوقهما. ${live} من تطبيقاتي متاحة على App Store وGoogle Play.`,
   seeWork: 'شاهد أعمالي',
+  intent: {
+    question: 'ما الذي تبحث عنه؟',
+    hire: 'أبحث عن موظف',
+    build: 'أريد بناء تطبيق',
+    hirePitch: 'متاح لوظائف Flutter والتطوير المتكامل بدوام كامل. أنشر التطبيقات في المتاجر، وأتولى الخادم، وأقيس النتائج.',
+    buildPitch: 'مهندس واحد للمنتج كاملًا: التطبيق، ولوحة التحكم، والـ API، والمدفوعات، والنشر في المتاجر.',
+    hireCtas: ['شاهد خبراتي', 'تحميل السيرة الذاتية'],
+    buildCtas: ['تطبيقات أطلقتها', 'أخبرني عن مشروعك']
+  },
+  proof: {
+    live: (count: number) => `${count} تطبيقات متاحة في المتاجر`,
+    impact: '+259% في قدرة الـ API لمنصة الحديد',
+    projects: (count: number) => `${count} مشروعًا في الجوال والويب والذكاء الاصطناعي`
+  },
+  scrollCue: 'مرّر لمشاهدة الأعمال',
+  loadTest: {
+    title: 'اختبار حمل على بيئة الإنتاج، قبل تحسيناتي وبعدها',
+    capacity: 'قدرة الـ API',
+    queries: 'استعلامات قاعدة البيانات عند فتح التطبيق لمستخدم مسجّل',
+    unit: 'طلب/ث',
+    before: 'وصلنا للسقف: كل الزوار تشاركوا حدًّا واحدًا للطلبات، ففشلت الطلبات بينما المعالج شبه متوقف.',
+    after: 'بعد ضبط الـ proxy وتحديد الحدود لكل مستخدم ولكل IP: 60 طلبًا في الثانية بنسبة أخطاء 0%.',
+    replay: 'أعد التشغيل',
+    source: 'اختبارات حمل بـ k6 على بيئة الإنتاج، خادم 4 vCPU و16 GB.'
+  },
+  qr: {
+    open: 'امسح للتثبيت',
+    close: 'إغلاق',
+    hint: 'وجّه كاميرا جوالك نحو الرمز.',
+    label: 'رمز QR لـ'
+  },
+  processTitle: 'طريقة عملي',
+  processIntro: 'ما يحدث بعد أن ترسل رسالتك، من أول مكالمة حتى يصبح التطبيق في أيدي عملائك.',
+  process: [
+    { title: 'تحديد النطاق والتصميم', body: 'نتفق على المستخدمين والشاشات وشكل الإطلاق. ترى التصاميم قبل كتابة أي سطر برمجي.' },
+    { title: 'بناء المنتج كاملًا', body: 'تطبيق Flutter ولوحة التحكم والـ API الذي يشغّلهما، مع المدفوعات والخرائط والإشعارات. تصلك نسخ تجريبية أثناء العمل.' },
+    { title: 'الإطلاق', body: 'أتولى رفع التطبيق ومراجعته على App Store وGoogle Play، وتجهيز خادم الإنتاج.' },
+    { title: 'الدعم', body: 'تقارير الأعطال والمراقبة من اليوم الأول، ثم الإصلاحات والميزات الجديدة بعد الإطلاق.' }
+  ],
+  replyNote: 'مقيم في جدة (GMT+3). أرد خلال يوم عمل واحد.',
   reelHint: 'اسحب للتدوير، واضغط على أي شاشة لفتحها.',
   liveTitle: 'متاحة في المتاجر',
   workTitle: 'أعمال مختارة',
@@ -163,7 +245,8 @@ const ar: Dictionary = {
     messagePlaceholder: 'الوظيفة أو المشروع، وكيف يمكنني المساعدة',
     send: 'إرسال الرسالة', sending: 'جارٍ الإرسال…',
     success: 'تم إرسال رسالتك. شكرًا لك، سأرد عليك قريبًا.',
-    error: 'تعذّر إرسال رسالتك. حاول مرة أخرى.'
+    error: 'تعذّر إرسال رسالتك.',
+    emailInstead: 'راسلني مباشرة عبر البريد.'
   },
   caseStudy: {
     allWork: 'كل الأعمال',

@@ -6,7 +6,7 @@ import type { Dictionary } from '../i18n/ui';
 
 type FormState = 'idle' | 'sending' | 'success' | 'error';
 
-export default function ContactForm({ labels }: { labels: Dictionary['form'] }) {
+export default function ContactForm({ labels, email }: { labels: Dictionary['form']; email: string }) {
   const [status, setStatus] = useState<FormState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -21,7 +21,8 @@ export default function ContactForm({ labels }: { labels: Dictionary['form'] }) 
     formData.forEach((value, key) => encodedForm.append(key, String(value)));
 
     try {
-      const response = await fetch('/', {
+      // Netlify only accepts submissions posted to a static file; '/' is handled by Next.js and never reaches Forms.
+      const response = await fetch('/contact-form.html', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: encodedForm.toString(),
@@ -55,7 +56,7 @@ export default function ContactForm({ labels }: { labels: Dictionary['form'] }) 
     </button>
     <div className={`contact-form-status ${status}`} aria-live="polite" role="status">
       {status === 'success' && <><Check size={17}/> {labels.success}</>}
-      {status === 'error' && <><AlertCircle size={17}/> {errorMessage}</>}
+      {status === 'error' && <><AlertCircle size={17}/> <span>{errorMessage} <a href={`mailto:${email}`}>{labels.emailInstead}</a></span></>}
     </div>
   </form>;
 }

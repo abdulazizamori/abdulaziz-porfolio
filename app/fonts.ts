@@ -1,6 +1,5 @@
-import { Tajawal, Archivo, IBM_Plex_Sans_Arabic } from 'next/font/google';
+import { Bricolage_Grotesque, Readex_Pro, Reem_Kufi } from 'next/font/google';
 
-export const archivo = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--font-archivo', display: 'swap' });
-export const plexArabic = IBM_Plex_Sans_Arabic({ subsets: ['arabic', 'latin'], weight: ['400', '500', '600', '700'], variable: '--font-plex-arabic', display: 'swap' });
-export const tajawal = Tajawal({ subsets: ['arabic', 'latin'], weight: ['700', '800'], variable: '--font-tajawal', display: 'swap' });
-
+export const bricolage = Bricolage_Grotesque({ subsets: ['latin'], axes: ['opsz', 'wdth'], variable: '--font-bricolage', display: 'swap' });
+export const readex = Readex_Pro({ subsets: ['arabic', 'latin'], variable: '--font-readex', display: 'swap' });
+export const reemKufi = Reem_Kufi({ subsets: ['arabic', 'latin'], variable: '--font-reem-kufi', display: 'swap' });

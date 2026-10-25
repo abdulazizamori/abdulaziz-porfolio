@@ -573,6 +573,12 @@ a { color: inherit; }
   text-decoration-thickness: 2px; text-underline-offset: 7px; text-decoration-color: var(--rule-strong); overflow-wrap: anywhere;
 }
 .contact-email:hover { text-decoration-color: currentColor; }
+.contact-phone {
+  display: flex; align-items: center; gap: 10px; width: fit-content; margin-top: 14px;
+  font-size: var(--step-1); font-weight: 700; text-decoration: none; font-variant-numeric: tabular-nums;
+}
+.contact-phone span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; text-decoration-color: var(--rule-strong); }
+.contact-phone:hover span { text-decoration-color: currentColor; }
 .contact-links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 24px; }
 .contact-links a { display: inline-flex; align-items: center; gap: 8px; color: var(--fg); text-decoration: none; font-weight: 650; font-size: var(--step--1); }
 .contact-links a:hover { text-decoration: underline; text-underline-offset: 4px; }

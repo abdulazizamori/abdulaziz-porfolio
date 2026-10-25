@@ -5,7 +5,7 @@ import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { AnimatePresence, MotionConfig, motion, useMotionValue, useSpring } from 'framer-motion';
-import { ArrowDown, ArrowUpRight, BriefcaseBusiness, Clock, Download, Github, Linkedin, Mail, Menu, Smartphone, X } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, BriefcaseBusiness, Clock, Download, Github, Linkedin, Mail, Menu, Phone, Smartphone, X } from 'lucide-react';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import type { Discipline, Project } from '../data';
 import type { Content } from '../i18n/content';
@@ -20,6 +20,8 @@ import LanguageSwitch from './LanguageSwitch';
 const HeroReel = dynamic(() => import('./HeroReel'), { ssr: false });
 
 const EMAIL = 'abdulaziz.amori10@gmail.com';
+const PHONE = '+966579349058';
+const PHONE_DISPLAY = '+966 57 934 9058';
 const GITHUB = 'https://github.com/abdulazizamori';
 const LINKEDIN = 'https://www.linkedin.com/in/abdulaziz-amori-414592332/';
 const CV = '/Abdulaziz-Amori-CV.pdf';
@@ -103,7 +105,7 @@ export default function HomePage({ locale, content }: { locale: Locale; content:
       <a className="nav-cta" href={`mailto:${EMAIL}`}>{t.emailMe}</a>
       <button className="menu" type="button" onClick={() => setMenu(open => !open)} aria-expanded={menu} aria-controls="mobile-menu" aria-label={menu ? t.closeMenu : t.openMenu}>{menu ? <X size={20}/> : <Menu size={20}/>}</button>
     </header>
-    <AnimatePresence>{menu && <motion.nav id="mobile-menu" className="mobile-menu" aria-label={t.sections} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: .18 }}>{navLinks(() => setMenu(false))}<a href={`mailto:${EMAIL}`}>{t.emailMe}</a><a href={CV} download>{t.downloadCv}</a></motion.nav>}</AnimatePresence>
+    <AnimatePresence>{menu && <motion.nav id="mobile-menu" className="mobile-menu" aria-label={t.sections} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: .18 }}>{navLinks(() => setMenu(false))}<a href={`mailto:${EMAIL}`}>{t.emailMe}</a><a href={`tel:${PHONE}`}>{t.callMe}</a><a href={CV} download>{t.downloadCv}</a></motion.nav>}</AnimatePresence>
 
     <main id="top">
       <section className="hero" aria-labelledby="hero-title">
@@ -262,6 +264,7 @@ export default function HomePage({ locale, content }: { locale: Locale; content:
             <p>{t.contactIntro}</p>
             <p className="reply-note"><Clock size={16} aria-hidden="true"/>{t.replyNote}</p>
             <a className="contact-email ltr" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <a className="contact-phone" href={`tel:${PHONE}`} aria-label={`${t.callMe} ${PHONE_DISPLAY}`}><Phone size={18} aria-hidden="true"/><span className="ltr">{PHONE_DISPLAY}</span></a>
             <div className="contact-links">
               <a href={LINKEDIN} target="_blank" rel="noreferrer"><Linkedin size={16} aria-hidden="true"/>LinkedIn</a>
               <a href={GITHUB} target="_blank" rel="noreferrer"><Github size={16} aria-hidden="true"/>GitHub</a>

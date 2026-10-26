@@ -15,7 +15,7 @@ Two audiences, weighted equally:
 The personal portfolio of Abdulaziz Amori, a Flutter and full-stack engineer based in Jeddah, Saudi Arabia. It exists to turn a visit into a contact: an email, a form message, or a CV download. Success is a recruiter or client reaching out.
 
 ## Positioning
-He builds whole products end to end: the Flutter apps, the web platform, the Laravel/Node API behind them, and AI features on top, and many of them are live in the App Store and Google Play. The Al Hdeed case study carries measured engineering impact (API capacity +259%, query reductions, 813 commits) that a generic portfolio cannot claim.
+He builds whole products end to end: the Flutter apps, the web platform, the Laravel/Node API behind them, and AI features on top, and many of them are live in the App Store and Google Play. The Al Hdeed case study carries measured engineering impact (API capacity +259%, query reductions up to 71%, 1,340 commits in six months) that a generic portfolio cannot claim.
 
 ## Operating Context
 Visitors arrive from LinkedIn, GitHub, CV links, and job applications, on desktop and on phones. Hosted on Netlify. Contact messages go through Netlify Forms to abdulaziz.amori10@gmail.com.
@@ -36,7 +36,7 @@ Visitors arrive from LinkedIn, GitHub, CV links, and job applications, on deskto
 
 ## Evidence on Hand
 - Real app screenshots in `public/assets/work/` and `public/assets/reel/`, app icons in `public/assets/icons/`, Al Hdeed mockup in `public/assets/images/`.
-- 26 projects in `app/data.ts`, 12 with store links.
+- 28 projects in `app/data.ts`, 12 with store links.
 - CV PDF at `public/Abdulaziz-Amori-CV.pdf`.
 - Measured Al Hdeed impact metrics (k6 load tests, query counts).
 - No testimonials, client logos, or press. Do not invent any.
